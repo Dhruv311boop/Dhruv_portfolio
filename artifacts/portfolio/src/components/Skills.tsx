@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { SiReact, SiNodedotjs, SiExpress, SiMongodb, SiTailwindcss, SiOpenai } from "react-icons/si";
 
 const skills = [
@@ -11,12 +11,12 @@ const skills = [
   { name: "AI APIs", icon: SiOpenai, color: "#c084fc", glow: "rgba(192,132,252,0.35)" },
 ];
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { staggerChildren: 0.12 } }
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 30, scale: 0.9 },
   visible: { opacity: 1, y: 0, scale: 1, transition: { type: "spring", stiffness: 120, damping: 14 } }
 };
