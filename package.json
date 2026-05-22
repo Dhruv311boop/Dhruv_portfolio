@@ -8,7 +8,7 @@
     "pnpm": "11.2.2"
   },
   "scripts": {
-    "build:portfolio": "cd artifacts/portfolio && ./node_modules/.bin/vite build --config vite.config.ts",
+    "build:portfolio": "if [ -d artifacts/portfolio ]; then cd artifacts/portfolio; fi; node node_modules/vite/bin/vite.js build --config vite.config.ts",
     "build": "corepack pnpm run typecheck && corepack pnpm -r --if-present run build",
     "typecheck:libs": "tsc --build",
     "typecheck": "corepack pnpm run typecheck:libs && corepack pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
