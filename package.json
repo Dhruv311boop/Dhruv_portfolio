@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "license": "MIT",
   "packageManager": "pnpm@11.2.2",
+  "engines": {
+    "node": "22.x",
+    "pnpm": "11.2.2"
+  },
   "scripts": {
     "build:portfolio": "cd artifacts/portfolio && ./node_modules/.bin/vite build --config vite.config.ts",
     "build": "corepack pnpm run typecheck && corepack pnpm -r --if-present run build",

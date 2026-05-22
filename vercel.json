@@ -1,6 +1,6 @@
 {
-  "installCommand": "pnpm install --frozen-lockfile",
-  "buildCommand": "pnpm run build:portfolio",
+  "installCommand": "corepack enable && pnpm install --frozen-lockfile",
+  "buildCommand": "cd artifacts/portfolio && ./node_modules/.bin/vite build --config vite.config.ts",
   "outputDirectory": "artifacts/portfolio/dist/public",
   "framework": "vite",
   "rewrites": [
