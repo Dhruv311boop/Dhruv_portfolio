@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChatFlow — Real-Time Chat</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    #messages { scroll-behavior: smooth; }
+    .msg-in { background: rgba(255,255,255,0.08); border-radius: 4px 18px 18px 18px; }
+    .msg-out { background: rgba(59,130,246,0.7); border-radius: 18px 4px 18px 18px; }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+    .fade-up { animation: fadeUp 0.2s ease forwards; }
+  </style>
+</head>
+<body class="h-screen bg-gray-950 text-white flex flex-col overflow-hidden">
+
+  <!-- Join Screen -->
+  <div id="joinScreen" class="flex items-center justify-center h-full bg-gray-950">
+    <div class="bg-gray-900 border border-gray-800 rounded-2xl p-10 w-full max-w-sm shadow-2xl">
+      <h1 class="text-3xl font-extrabold mb-1 text-center">ChatFlow</h1>
+      <p class="text-gray-400 text-sm text-center mb-8">Real-time messaging, zero friction</p>
+      <div class="space-y-4">
+        <input id="usernameInput" type="text" placeholder="Your name" maxlength="20"
+          class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition" />
+        <input id="roomInput" type="text" placeholder="Room name (e.g. general)" maxlength="20"
+          class="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-blue-500 transition" />
+        <button onclick="joinRoom()"
+          class="w-full py-3 bg-blue-600 hover:bg-blue-500 font-bold rounded-xl transition text-white">
+          Join Room →
+        </button>
+      </div>
+      <p id="joinError" class="text-red-400 text-sm text-center mt-3 hidden"></p>
+    </div>
+  </div>
+
+  <!-- Chat Screen -->
+  <div id="chatScreen" class="hidden flex flex-col h-full">
+    <!-- Header -->
+    <div class="flex items-center justify-between px-6 py-4 bg-gray-900 border-b border-gray-800 shrink-0">
+      <div>
+        <h2 id="roomTitle" class="font-bold text-lg"></h2>
+        <p id="onlineCount" class="text-xs text-gray-400"></p>
+      </div>
+      <button onclick="leaveRoom()" class="text-sm text-gray-400 hover:text-white transition px-3 py-1 rounded-lg hover:bg-gray-800">Leave</button>
+    </div>
+
+    <div class="flex flex-1 overflow-hidden">
+      <!-- Messages -->
+      <div class="flex-1 flex flex-col overflow-hidden">
+        <div id="messages" class="flex-1 overflow-y-auto px-6 py-4 space-y-3"></div>
+
+        <!-- Typing indicator -->
+        <div id="typingIndicator" class="px-6 py-1 text-xs text-gray-500 h-5 shrink-0"></div>
+
+        <!-- Input -->
+        <div class="px-4 pb-4 shrink-0">
+          <div class="flex gap-3 bg-gray-900 border border-gray-800 rounded-2xl p-2">
+            <input id="msgInput" type="text" placeholder="Type a message..." maxlength="500"
+              class="flex-1 bg-transparent px-3 py-2 text-white placeholder-gray-500 focus:outline-none"
+              onkeydown="handleKey(event)" oninput="handleTyping()" />
+            <button onclick="sendMessage()"
+              class="px-5 py-2 bg-blue-600 hover:bg-blue-500 font-semibold rounded-xl transition text-sm">
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sidebar: users -->
+      <div class="w-48 bg-gray-900 border-l border-gray-800 hidden md:block shrink-0">
+        <p class="text-xs font-semibold text-gray-500 px-4 pt-5 pb-3 uppercase tracking-wider">Online</p>
+        <ul id="userList" class="px-4 space-y-2"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const socket = io(window.location.origin.replace(':5173', ':3001'));
+    let currentUser = '';
+    let currentRoom = '';
+    let typingTimeout;
+
+    function joinRoom() {
+      const username = document.getElementById('usernameInput').value.trim();
+      const room = document.getElementById('roomInput').value.trim().toLowerCase().replace(/\s+/g, '-');
+      if (!username || !room) {
+        showJoinError('Please fill in both fields');
+        return;
+      }
+      currentUser = username;
+      currentRoom = room;
+      socket.emit('join', { username, room });
+      document.getElementById('joinScreen').classList.add('hidden');
+      document.getElementById('chatScreen').classList.remove('hidden');
+      document.getElementById('roomTitle').textContent = `# ${room}`;
+      document.getElementById('msgInput').focus();
+    }
+
+    function leaveRoom() {
+      socket.disconnect();
+      location.reload();
+    }
+
+    function sendMessage() {
+      const input = document.getElementById('msgInput');
+      const text = input.value.trim();
+      if (!text) return;
+      socket.emit('message', { text, room: currentRoom });
+      socket.emit('stopTyping', { room: currentRoom });
+      input.value = '';
+    }
+
+    function handleKey(e) {
+      if (e.key === 'Enter') sendMessage();
+    }
+
+    function handleTyping() {
+      socket.emit('typing', { room: currentRoom, username: currentUser });
+      clearTimeout(typingTimeout);
+      typingTimeout = setTimeout(() => socket.emit('stopTyping', { room: currentRoom }), 1500);
+    }
+
+    function showJoinError(msg) {
+      const el = document.getElementById('joinError');
+      el.textContent = msg;
+      el.classList.remove('hidden');
+      setTimeout(() => el.classList.add('hidden'), 3000);
+    }
+
+    function timeStr(ts) {
+      return new Date(ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function appendMessage(msg, isOwn) {
+      const msgs = document.getElementById('messages');
+      const div = document.createElement('div');
+      div.className = `flex ${isOwn ? 'justify-end' : 'justify-start'} fade-up`;
+      div.innerHTML = `
+        <div class="max-w-xs lg:max-w-md">
+          ${!isOwn ? `<p class="text-xs text-blue-400 font-medium mb-1 ml-1">${msg.username}</p>` : ''}
+          <div class="${isOwn ? 'msg-out' : 'msg-in'} px-4 py-2 text-sm text-white">
+            ${msg.text}
+          </div>
+          <p class="text-xs text-gray-600 mt-1 ${isOwn ? 'text-right mr-1' : 'ml-1'}">${timeStr(msg.time)}</p>
+        </div>
+      `;
+      msgs.appendChild(div);
+      msgs.scrollTop = msgs.scrollHeight;
+    }
+
+    function appendSystem(text) {
+      const msgs = document.getElementById('messages');
+      const div = document.createElement('div');
+      div.className = 'text-center text-xs text-gray-600 py-1';
+      div.textContent = text;
+      msgs.appendChild(div);
+      msgs.scrollTop = msgs.scrollHeight;
+    }
+
+    socket.on('history', (history) => {
+      history.forEach(msg => appendMessage(msg, msg.id === socket.id));
+    });
+
+    socket.on('message', (msg) => {
+      appendMessage(msg, msg.id === socket.id);
+    });
+
+    socket.on('system', ({ text }) => appendSystem(text));
+
+    socket.on('userList', (users) => {
+      document.getElementById('onlineCount').textContent = `${users.length} online`;
+      const ul = document.getElementById('userList');
+      ul.innerHTML = users.map(u =>
+        `<li class="flex items-center gap-2 text-sm text-gray-300">
+          <span class="w-2 h-2 rounded-full bg-green-400 inline-block"></span>${u}
+        </li>`
+      ).join('');
+    });
+
+    socket.on('typing', ({ username }) => {
+      document.getElementById('typingIndicator').textContent = `${username} is typing...`;
+    });
+
+    socket.on('stopTyping', () => {
+      document.getElementById('typingIndicator').textContent = '';
+    });
+  </script>
+</body>
+</html>

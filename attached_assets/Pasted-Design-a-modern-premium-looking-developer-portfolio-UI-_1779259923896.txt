@@ -1,0 +1,66 @@
+Design a modern, premium-looking developer portfolio UI for “Dhruv Chaudhary”.
+IMPORTANT:
+The current UI aesthetic is already perfect.
+Do NOT redesign, downgrade, simplify, or alter the visual identity.
+Do not experiment with different styles midway.
+Preserve the exact premium futuristic aesthetic throughout the entire website.
+Ensure the UI remains visually consistent across every section.
+Focus only on maintaining and polishing the existing premium look.
+The design should continue feeling luxurious, modern, cinematic, and recruiter-ready.
+Style:
+Dark futuristic theme
+Clean glassmorphism UI
+Premium SaaS-inspired visuals
+Apple-level clean design
+Fully responsive
+Smooth CSS transitions and animations
+High-quality gradients and glow effects
+Hero Section:
+Large bold heading:
+“Hi, I’m Dhruv Chaudhary”
+Subheading:
+“Full Stack Developer crafting modern web experiences.”
+Animated gradient background
+Glowing visual effects
+Smooth floating elements
+CTA buttons:
+View Projects
+Contact Me
+Navbar:
+Fixed transparent blurred navbar
+Smooth hover effects
+Minimal premium look
+Sections:
+Home, About, Skills, Projects, Contact
+About Section:
+Glassmorphism cards
+Modern layout with premium spacing
+Smooth reveal animations
+Professional introduction
+Skills Section:
+Modern glowing skill cards
+Interactive hover effects
+Skills:
+React, Tailwind CSS, JavaScript, Node.js, Express.js, MongoDB
+Projects Section:
+Premium project showcase cards
+Hover animations
+Large preview images
+Tech stack badges
+GitHub and Live Demo buttons
+Modern grid layout
+Typography:
+Bold modern typography
+Luxury spacing and alignment
+Clean readable text hierarchy
+Extra Effects:
+Smooth scrolling
+Particle background
+Custom cursor effects
+Floating UI elements
+Animated footer
+Soft shadows and glow layers
+Tech Stack:
+React + Tailwind CSS
+Final Goal:
+The portfolio must remain visually stunning, world-class, futuristic, minimal, and unforgettable. Do not alter the existing UI direction — only preserve and refine it while keeping the exact same premium feel.

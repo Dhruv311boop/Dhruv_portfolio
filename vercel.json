@@ -1,0 +1,12 @@
+{
+  "installCommand": "pnpm install --frozen-lockfile=false",
+  "buildCommand": "pnpm run build:portfolio",
+  "outputDirectory": "artifacts/portfolio/dist/public",
+  "framework": "vite",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
