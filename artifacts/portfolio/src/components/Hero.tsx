@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowDown, Mail } from "lucide-react";
+import { ArrowDown, Mail, Sparkles } from "lucide-react";
 import { FaLinkedin } from "react-icons/fa";
 import { SiGithub } from "react-icons/si";
 
@@ -110,6 +110,18 @@ const Hero = () => {
           transition={{ duration: 0.6 }}
           className="max-w-5xl"
         >
+          {/* Badge */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border mb-8 glow-border"
+            style={{ background: "rgba(139,92,246,0.12)", borderColor: "rgba(139,92,246,0.4)" }}
+          >
+            <Sparkles className="w-4 h-4 text-violet-400" />
+            <span className="text-sm font-semibold text-violet-300">Available for hire</span>
+          </motion.div>
+
           {/* Greeting */}
           <motion.p
             initial={{ opacity: 0, y: 10 }}
