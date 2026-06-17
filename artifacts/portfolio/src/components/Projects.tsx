@@ -101,7 +101,7 @@ const Projects = () => {
                 whileHover={{ y: -12 }}
                 onHoverStart={() => setHovered(index)}
                 onHoverEnd={() => setHovered(null)}
-                className={`relative rounded-2xl p-8 flex flex-col h-full cursor-pointer transition-all duration-400 overflow-hidden ${isFeatured ? 'lg:col-span-2' : ''}`}
+                className={`relative rounded-2xl p-8 flex flex-col h-full cursor-pointer transition-all duration-400 overflow-hidden`}
                 style={{
                   background: isHovered
                     ? `linear-gradient(135deg, ${project.accent}18, rgba(139,92,246,0.06), rgba(10,10,20,0.9))`
@@ -116,7 +116,7 @@ const Projects = () => {
                   {project.number}
                 </div>
 
-                <div className={`flex flex-col ${isFeatured ? 'lg:flex-row lg:gap-12' : ''} h-full`}>
+                <div className={`flex flex-col h-full`}>
                   <div className={`flex-1 flex flex-col relative z-10`}>
                     {/* Top row */}
                     <div className="flex justify-between items-start mb-6">
@@ -227,7 +227,7 @@ const Projects = () => {
 
                   {/* Highlights section (only for featured) */}
                   {isFeatured && project.highlights && (
-                    <div className="flex-1 mt-8 lg:mt-0 relative z-10 flex flex-col justify-center">
+                    <div className="flex-1 mt-8 relative z-10 flex flex-col justify-center">
                       <div className="p-6 rounded-xl" style={{ background: "rgba(0,0,0,0.2)", border: "1px solid rgba(255,255,255,0.05)" }}>
                         <h4 className="text-sm font-bold uppercase tracking-wider mb-4 text-white/80">Project Highlights</h4>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
