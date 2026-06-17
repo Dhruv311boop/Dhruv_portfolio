@@ -55,6 +55,13 @@ const projects: Project[] = [
     accent: "#06b6d4",
     glow: "rgba(6,182,212,0.3)",
     number: "02",
+    highlights: [
+      "Real-time Forecasts",
+      "Hourly Breakdowns",
+      "Location Tracking",
+      "Weather Alerts",
+      "Interactive UI"
+    ]
   },
 ];
 
@@ -225,8 +232,8 @@ const Projects = () => {
                     </div>
                   </div>
 
-                  {/* Highlights section (only for featured) */}
-                  {isFeatured && project.highlights && (
+                  {/* Highlights section */}
+                  {project.highlights && (
                     <div className="flex-1 mt-8 relative z-10 flex flex-col justify-center">
                       <div className="p-6 rounded-xl" style={{ background: "rgba(0,0,0,0.2)", border: "1px solid rgba(255,255,255,0.05)" }}>
                         <h4 className="text-sm font-bold uppercase tracking-wider mb-4 text-white/80">Project Highlights</h4>
