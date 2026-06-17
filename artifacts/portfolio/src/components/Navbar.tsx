@@ -106,7 +106,7 @@ const Navbar = () => {
             <SiGithub className="w-4 h-4" />
           </a>
           <a
-            href="https://www.linkedin.com/in/dhruv-chaudhary-nsut"
+            href="https://www.linkedin.com/in/dhruv-chaudhary-43968b394"
             target="_blank"
             rel="noopener noreferrer"
             data-testid="link-linkedin-navbar"
