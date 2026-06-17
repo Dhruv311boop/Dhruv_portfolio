@@ -95,7 +95,7 @@ const Contact = () => {
                 glow: "rgba(139,92,246,0.4)"
               },
               {
-                href: "https://www.linkedin.com/in/dhruv-chaudhary",
+                href: "https://www.linkedin.com/in/dhruv-chaudhary-nsut",
                 icon: FaLinkedin,
                 label: "LinkedIn",
                 color: "#f472b6",

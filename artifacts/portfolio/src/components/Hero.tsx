@@ -257,7 +257,7 @@ const Hero = () => {
                 <SiGithub className="w-5 h-5" />
               </a>
               <a
-                href="https://www.linkedin.com/in/dhruv-chaudhary"
+                href="https://www.linkedin.com/in/dhruv-chaudhary-nsut"
                 target="_blank"
                 rel="noopener noreferrer"
                 data-testid="link-linkedin-hero"
